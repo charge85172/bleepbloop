@@ -1,10 +1,10 @@
-import '../css/style.css';
-import { Engine, DisplayMode } from "excalibur";
-import { Resources, ResourceLoader } from './resources.js';
-import { Fish } from './fish.js'; // Importeer de Fish class
-import { Bubble } from './bubble.js'; // Importeer de Bubble class
-import { Shark } from './shark.js'; // Importeer de Shark class
-import { UI } from './ui.js';
+import '../css/style.css'
+import { Engine, DisplayMode } from "excalibur"
+import { Resources, ResourceLoader } from './resources.js'
+import { Fish } from './fish.js'
+import { Bubble } from './bubble.js'
+import { Shark } from './shark.js'
+import { UI } from './ui.js'
 
 export class Game extends Engine {
     constructor() {
@@ -13,53 +13,19 @@ export class Game extends Engine {
             height: 1080,
             maxFps: 12,
             displayMode: DisplayMode.FitScreen
-        });
-        this.showDebug (true); // Debug mode aanzetten om de hitbox te zien
-        this.start(ResourceLoader).then(() => this.startGame());
+        })
+        this.showDebug(true)
+        this.start(ResourceLoader).then(() => this.startGame())
     }
+
     startGame() {
-
-        console.log("Start de game!");
-
-        
-
-        // Create 50 fish
-        for (let i = 0; i < 50; i++) {
-            this.createFish();
-        }
-
-        // Create 1 shark
-        for (let i = 0; i < 1; i++) {
-            this.createShark();
-        }
-
-        // Create 50 bubbles
-        for (let i = 0; i < 50; i++) {
-            this.createBubble();
-        }
-
-
-
+        for (let i = 0; i < 50; i++) this.add(new Fish())
+        for (let i = 0; i < 50; i++) this.add(new Bubble())
+    let shark = new Shark("Bruce", 65)
+        this.add(new Shark())
         this.ui = new UI()
         this.add(this.ui)
     }
-
-    createFish() {
-        const fish = new Fish(); // 1 instantie van de Fish class 
-        this.add(fish); // 1 visje toevoegen aan de game 
-
-    }
-    createBubble() {
-        const bubble = new Bubble(); // zelfde hiero
-        this.add(bubble); //1 bubbel toevoegen lol 
-    }
-    createShark() {
-        const shark = new Shark(); // 1 instantie van de Shark class 
-        this.add(shark); // 1 haai toevoegen aan de game 
-
-    }
 }
 
-
-
-new Game() //game starten 
+new Game()

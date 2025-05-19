@@ -2,61 +2,44 @@ import { Actor, Vector, Keys, CollisionType } from "excalibur";
 import { Resources } from './resources.js';
 
 export class Shark extends Actor {
-    constructor() {
-        super({width: 1000,height: 1000}); // Hitbox van de haai
+    constructor(name, age) {
+        super();
+        this.name = name;
+        this.age = age;
+        this.speed = 0;
+        console.log(`Shark ${this.name} is ${this.age} years old`);
+    }
 
-        this.graphics.use(Resources.shark.toSprite());
+    onInitialize(engine) {
+        this.graphics.use(Resources.Shark.toSprite());
+        this.body.collisionType = CollisionType.Active;
 
-        // this.body.collisionType = CollisionType.Active;
+        // Add a rectangular hitbox (adjust size as needed)
+        this.body.useBoxCollider(150, 60);
 
-        let X = Math.random() * 960;
-        let Y = Math.random() * 540;
-        this.scale = new Vector(0.1, 0.1); // Make the shark visible
-        this.pos = new Vector(X, Y);
+        this.anchor = new Vector(0.5, 0.5);
+        this.scale = new Vector(0.1, 0.1);
+        this.pos = new Vector(Math.random() * 960, Math.random() * 540);
+        this.speed = 200;
 
-        this.speed = 200; // snelheid van de haai
-
-        this.on("exitviewport", () => this.SharkLeave());
+        this.events.on("exitviewport", () => this.sharkLeave());
     }
 
     onPreUpdate(engine) {
         const kb = engine.input.keyboard;
-
         let xspeed = 0;
         let yspeed = 0;
-        if (kb.isHeld(Keys.W)) {
-            yspeed -= 200;
-        }
-        if (kb.isHeld(Keys.S)) {
-            yspeed += 200;
-        }
-        if (kb.isHeld(Keys.A)) {
-            xspeed -= 200;
-        }
-        if (kb.isHeld(Keys.D)) {
-            xspeed += 200;
-        }
+
+        if (kb.isHeld(Keys.W)) yspeed -= this.speed;
+        if (kb.isHeld(Keys.S)) yspeed += this.speed;
+        if (kb.isHeld(Keys.A)) xspeed -= this.speed;
+        if (kb.isHeld(Keys.D)) xspeed += this.speed;
+
         this.vel = new Vector(xspeed, yspeed);
-        // // Movement vector
-        // let move = new Vector(0, 0);
-
-        // if (kb.isHeld(Keys.W)) move.y -= 1;
-        // if (kb.isHeld(Keys.S)) move.y += 1;
-        // if (kb.isHeld(Keys.A)) move.x -= 1;
-        // if (kb.isHeld(Keys.D)) move.x += 1;
-
-        // if (move.x !== 0 || move.y !== 0) {
-        //     move = move.normalize().scale(this.speed * engine.delta / 1000);
-        //     this.pos = this.pos.add(move);
-
-        //     // Clamp position to screen bounds (assuming 1920x1080)
-        //     this.pos.x = Math.max(0, Math.min(1920, this.pos.x));
-        //     this.pos.y = Math.max(0, Math.min(1080, this.pos.y));
-        // }
     }
 
-    SharkLeave() {
-        this.pos = new Vector(960, 540); // Center of the screen
+    sharkLeave() {
+        this.pos = new Vector(960, 540);
         this.vel = Vector.Zero;
     }
 }

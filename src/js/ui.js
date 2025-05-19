@@ -1,13 +1,10 @@
-import {actor} from "excalibur"
+import { Actor } from "excalibur"
 
-export class ui extends actor {
-    constructor(){
-        super()
-        console.log("ik ben ui")
+export class UI extends Actor {
+    onInitialize() {
+        console.log("UI initialized")
     }
-    addScore () {
-        console.log("ui adds point")
+    addScore() {
+        console.log("UI adds point")
     }
-
-    
 }
